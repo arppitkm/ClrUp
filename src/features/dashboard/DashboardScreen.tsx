@@ -19,6 +19,7 @@ import {
   similarPhotosReclaimableBytes,
   useSimilarPhotosStore,
 } from '../../stores/useSimilarPhotosStore';
+import { duplicateContactCount, useContactsStore } from '../../stores/useContactsStore';
 import { formatBytesText, pluralize } from '../../lib/format';
 import type { RootStackParamList } from '../../navigation/types';
 import type { CategoryId, CategorySummary } from '../../types/domain';
@@ -46,15 +47,14 @@ const CATEGORIES: ReadonlyArray<{
 ];
 
 /**
- * Duplicate Contacts still has no native scanner (lands in phase 5) — it
- * stays placeholder until then. The other three are replaced with their real
- * scan results the moment each one completes.
+ * Fallback shown before each category's own scan has produced a real result
+ * — every category is now backed by a real native scanner.
  */
 const PLACEHOLDER: Record<CategoryId, CategorySummary> = {
   similarPhotos: { id: 'similarPhotos', itemCount: 0, reclaimableBytes: 0 },
   screenshots: { id: 'screenshots', itemCount: 0, reclaimableBytes: 0 },
   largeVideos: { id: 'largeVideos', itemCount: 0, reclaimableBytes: 0 },
-  duplicateContacts: { id: 'duplicateContacts', itemCount: 37, reclaimableBytes: 0 },
+  duplicateContacts: { id: 'duplicateContacts', itemCount: 0, reclaimableBytes: 0 },
 };
 
 export const DashboardScreen: React.FC = () => {
@@ -64,15 +64,17 @@ export const DashboardScreen: React.FC = () => {
   const permissions = usePermissions();
   const scan = useScanStore();
   const similar = useSimilarPhotosStore();
+  const contacts = useContactsStore();
   // Selected separately so the effects below depend on stable function
   // references rather than the whole store object, which changes identity on
   // every status/summary update.
   const runScan = useScanStore(s => s.scan);
   const runSimilarScan = useSimilarPhotosStore(s => s.scan);
+  const runContactsScan = useContactsStore(s => s.scan);
 
-  // Both scans need at least some Photos access; `.limited` still lets us
-  // scan whatever the user has granted. Each runs once per permission grant —
-  // the stores themselves guard against overlapping scans.
+  // Both photo scans need at least some Photos access; `.limited` still lets
+  // us scan whatever the user has granted. Each runs once per permission
+  // grant — the stores themselves guard against overlapping scans.
   useEffect(() => {
     if (permissions.photos === 'authorized' || permissions.photos === 'limited') {
       runScan();
@@ -80,11 +82,18 @@ export const DashboardScreen: React.FC = () => {
     }
   }, [permissions.photos, runScan, runSimilarScan]);
 
+  useEffect(() => {
+    if (permissions.contacts === 'authorized') {
+      runContactsScan();
+    }
+  }, [permissions.contacts, runContactsScan]);
+
   // Only show a category row as "pending" once its scan has actually been
-  // requested — before Photos access is granted, `idle` just means nothing
-  // has been asked for yet, not that a scan is running.
+  // requested — before permission is granted, `idle` just means nothing has
+  // been asked for yet, not that a scan is running.
   const scanPending = scan.status === 'scanning';
   const similarPending = similar.status === 'scanning';
+  const contactsPending = contacts.status === 'scanning';
 
   const summaries = useMemo<Record<CategoryId, CategorySummary>>(() => {
     let next = PLACEHOLDER;
@@ -113,8 +122,18 @@ export const DashboardScreen: React.FC = () => {
         },
       };
     }
+    if (contacts.status === 'ready') {
+      next = {
+        ...next,
+        duplicateContacts: {
+          id: 'duplicateContacts',
+          itemCount: duplicateContactCount(contacts.groups),
+          reclaimableBytes: 0,
+        },
+      };
+    }
     return next;
-  }, [scan.status, scan.summary, similar.status, similar.groups]);
+  }, [scan.status, scan.summary, similar.status, similar.groups, contacts.status, contacts.groups]);
 
   const segments = useMemo<RingSegment[]>(
     () =>
@@ -161,7 +180,8 @@ export const DashboardScreen: React.FC = () => {
           const summary = summaries[category.id];
           const pending =
             (scanPending && (category.id === 'screenshots' || category.id === 'largeVideos')) ||
-            (similarPending && category.id === 'similarPhotos');
+            (similarPending && category.id === 'similarPhotos') ||
+            (contactsPending && category.id === 'duplicateContacts');
           return (
             <CategoryRow
               key={category.id}
