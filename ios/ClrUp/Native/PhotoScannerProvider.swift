@@ -34,13 +34,13 @@ final class PhotoScannerProvider: NSObject {
     let videos = fetchVideos()
 
     var screenshotBytes: Int64 = 0
-    screenshots.enumerateObjects { asset, _, _ in
-      screenshotBytes += Self.estimatedBytes(for: asset)
+    for asset in screenshots {
+      screenshotBytes += PHAssetSizeEstimator.bytes(for: asset)
     }
 
     var largeVideoBytes: Int64 = 0
     videos.enumerateObjects { asset, _, _ in
-      largeVideoBytes += Self.estimatedBytes(for: asset)
+      largeVideoBytes += PHAssetSizeEstimator.bytes(for: asset)
     }
 
     return [
@@ -54,13 +54,7 @@ final class PhotoScannerProvider: NSObject {
   // MARK: Screenshots
 
   @objc func screenshotList() -> [[String: Any]] {
-    let result = fetchScreenshots()
-    var rows: [[String: Any]] = []
-    rows.reserveCapacity(result.count)
-    result.enumerateObjects { asset, _, _ in
-      rows.append(Self.describe(asset))
-    }
-    return rows
+    fetchScreenshots().map(Self.describe)
   }
 
   // MARK: Videos
@@ -126,15 +120,28 @@ final class PhotoScannerProvider: NSObject {
 
   // MARK: Fetch helpers
 
-  private func fetchScreenshots() -> PHFetchResult<PHAsset> {
+  /**
+   * Fetches all images and filters the screenshot subtype in Swift, rather
+   * than in the predicate. `(mediaSubtype & %d) != 0` looks like valid
+   * NSPredicate syntax, but Photos' predicate evaluator only recognizes a
+   * narrow, undocumented whitelist of expressions — this bitmask form
+   * silently matched almost nothing instead of erroring, so it was actually
+   * broken from the start. `PHAssetMediaSubtype` is a real Swift OptionSet on
+   * the fetched `PHAsset`, so checking it directly is unambiguous.
+   */
+  private func fetchScreenshots() -> [PHAsset] {
     let options = PHFetchOptions()
-    options.predicate = NSPredicate(
-      format: "mediaType = %d AND (mediaSubtype & %d) != 0",
-      PHAssetMediaType.image.rawValue,
-      PHAssetMediaSubtype.photoScreenshot.rawValue
-    )
+    options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
     options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-    return PHAsset.fetchAssets(with: options)
+    let result = PHAsset.fetchAssets(with: options)
+
+    var screenshots: [PHAsset] = []
+    result.enumerateObjects { asset, _, _ in
+      if asset.mediaSubtypes.contains(.photoScreenshot) {
+        screenshots.append(asset)
+      }
+    }
+    return screenshots
   }
 
   private func fetchVideos() -> PHFetchResult<PHAsset> {
@@ -143,7 +150,7 @@ final class PhotoScannerProvider: NSObject {
     return PHAsset.fetchAssets(with: options)
   }
 
-  // MARK: Description / size estimation
+  // MARK: Description
 
   private static func describe(_ asset: PHAsset) -> [String: Any] {
     [
@@ -152,32 +159,7 @@ final class PhotoScannerProvider: NSObject {
       "widthPx": asset.pixelWidth,
       "heightPx": asset.pixelHeight,
       "durationSeconds": asset.duration,
-      "bytes": estimatedBytes(for: asset),
+      "bytes": PHAssetSizeEstimator.bytes(for: asset),
     ]
-  }
-
-  /**
-   * `PHAssetResource`'s `fileSize` key isn't part of the public struct
-   * surface, but reading it via KVC is a long-established, widely-shipped
-   * technique (it's a real stored property the framework simply doesn't
-   * expose through a typed accessor) and is far cheaper than the only fully
-   * "public" alternative: downloading the whole asset just to measure it.
-   * Falls back to a bitrate-based estimate from pixel count/duration if the
-   * key is ever unavailable, so this never silently reports zero.
-   */
-  private static func estimatedBytes(for asset: PHAsset) -> Int64 {
-    let resources = PHAssetResource.assetResources(for: asset)
-    for resource in resources {
-      if let size = resource.value(forKey: "fileSize") as? Int64, size > 0 {
-        return size
-      }
-    }
-
-    let pixels = Int64(asset.pixelWidth) * Int64(asset.pixelHeight)
-    if asset.mediaType == .video {
-      let bitsPerSecond: Int64 = 8_000_000 // conservative 1080p-ish estimate
-      return Int64(asset.duration) * (bitsPerSecond / 8)
-    }
-    return pixels / 2 // rough JPEG-ish estimate: ~0.5 bytes/pixel
   }
 }
