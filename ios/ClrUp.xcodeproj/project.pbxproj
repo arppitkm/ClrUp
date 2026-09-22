@@ -8,24 +8,34 @@
 
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-ClrUp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-ClrUp.a */; };
+		105462422E0A43A59849F13F /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0004DEDD9A164AE5B10AAFDC /* PhotosUI.framework */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		469387AB63BC4189B9E00BFF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8EE56EB87D4929BF96EF00 /* SceneDelegate.swift */; };
 		51C8FE92163C35E2F4488B57 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
-		469387AB63BC4189B9E00BFF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8EE56EB87D4929BF96EF00 /* SceneDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		940D63C1471D40F79C32ECB6 /* PermissionsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A4A3304B9D4F568D1DE753 /* PermissionsProvider.swift */; };
+		C1DB2B8949DD45D4A8509D4F /* RCTPermissions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0C7AAE0CAEC1414EBDBE4CBB /* RCTPermissions.mm */; };
+		E35F976DF9124E6FA31CF07C /* RCTDeviceStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = A8F960571547487E87AED063 /* RCTDeviceStorage.mm */; };
+		FC6C8E3EC78D44F9849E8806 /* DeviceStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793DB453AC2045569E3BA3F3 /* DeviceStorageProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0004DEDD9A164AE5B10AAFDC /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
+		0C7AAE0CAEC1414EBDBE4CBB /* RCTPermissions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTPermissions.mm; path = ClrUp/Native/RCTPermissions.mm; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ClrUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClrUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ClrUp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ClrUp/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = ClrUp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-ClrUp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClrUp.debug.xcconfig"; path = "Target Support Files/Pods-ClrUp/Pods-ClrUp.debug.xcconfig"; sourceTree = "<group>"; };
+		4B8EE56EB87D4929BF96EF00 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ClrUp/SceneDelegate.swift; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-ClrUp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClrUp.release.xcconfig"; path = "Target Support Files/Pods-ClrUp/Pods-ClrUp.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-ClrUp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClrUp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ClrUp/AppDelegate.swift; sourceTree = "<group>"; };
-		4B8EE56EB87D4929BF96EF00 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ClrUp/SceneDelegate.swift; sourceTree = "<group>"; };
+		793DB453AC2045569E3BA3F3 /* DeviceStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeviceStorageProvider.swift; path = ClrUp/Native/DeviceStorageProvider.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ClrUp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A8F960571547487E87AED063 /* RCTDeviceStorage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTDeviceStorage.mm; path = ClrUp/Native/RCTDeviceStorage.mm; sourceTree = "<group>"; };
+		D0A4A3304B9D4F568D1DE753 /* PermissionsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PermissionsProvider.swift; path = ClrUp/Native/PermissionsProvider.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -35,6 +45,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-ClrUp.a in Frameworks */,
+				105462422E0A43A59849F13F /* PhotosUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +58,7 @@
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				4B8EE56EB87D4929BF96EF00 /* SceneDelegate.swift */,
+				C45CE8838CBA4F199700FDA4 /* Native */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
@@ -58,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
+				0004DEDD9A164AE5B10AAFDC /* PhotosUI.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-ClrUp.a */,
 			);
 			name = Frameworks;
@@ -99,6 +112,17 @@
 				5709B34CF0A7D63546082F79 /* Pods-ClrUp.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		C45CE8838CBA4F199700FDA4 /* Native */ = {
+			isa = PBXGroup;
+			children = (
+				793DB453AC2045569E3BA3F3 /* DeviceStorageProvider.swift */,
+				A8F960571547487E87AED063 /* RCTDeviceStorage.mm */,
+				D0A4A3304B9D4F568D1DE753 /* PermissionsProvider.swift */,
+				0C7AAE0CAEC1414EBDBE4CBB /* RCTPermissions.mm */,
+			);
+			name = Native;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,6 +275,10 @@
 			files = (
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
 				469387AB63BC4189B9E00BFF /* SceneDelegate.swift in Sources */,
+				FC6C8E3EC78D44F9849E8806 /* DeviceStorageProvider.swift in Sources */,
+				E35F976DF9124E6FA31CF07C /* RCTDeviceStorage.mm in Sources */,
+				940D63C1471D40F79C32ECB6 /* PermissionsProvider.swift in Sources */,
+				C1DB2B8949DD45D4A8509D4F /* RCTPermissions.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -33,8 +33,10 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<key>NSContactsUsageDescription</key>
+	<string>ClrUp checks your contacts for duplicates so you can merge or remove them. Nothing leaves your phone.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ClrUp scans your photo library on this device to find similar photos, screenshots, and large videos you can safely delete. Nothing is uploaded or shared.</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UIApplicationSceneManifest</key>

@@ -11,9 +11,11 @@ import {
   useTheme,
   type RingSegment,
 } from '../../design-system';
+import { useDeviceStorage } from '../../hooks/useDeviceStorage';
 import { formatBytesText, pluralize } from '../../lib/format';
 import type { RootStackParamList } from '../../navigation/types';
 import type { CategoryId, CategorySummary } from '../../types/domain';
+import { PermissionsSection } from '../permissions/PermissionsSection';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
@@ -51,7 +53,11 @@ const PLACEHOLDER: Record<CategoryId, CategorySummary> = {
 export const DashboardScreen: React.FC = () => {
   const theme = useTheme();
   const navigation = useNavigation<Nav>();
+  const deviceStorage = useDeviceStorage();
 
+  // Reclaimable-per-category figures are still placeholder data — real scans
+  // land in phase 3/4. Device capacity below is real, read from the native
+  // module, and is the only thing this screen currently reports truthfully.
   const summaries = PLACEHOLDER;
 
   const segments = useMemo<RingSegment[]>(
@@ -66,6 +72,9 @@ export const DashboardScreen: React.FC = () => {
 
   const totalItems = CATEGORIES.reduce((sum, c) => sum + summaries[c.id].itemCount, 0);
 
+  const capacityBytes =
+    deviceStorage.status === 'ready' ? deviceStorage.storage.totalBytes : undefined;
+
   return (
     <Screen edges={['top']}>
       <ScrollView
@@ -78,8 +87,18 @@ export const DashboardScreen: React.FC = () => {
           </Text>
         </View>
 
+        <PermissionsSection />
+
         <View style={styles.ringWrap}>
-          <StorageRing segments={segments} size={200} strokeWidth={16} />
+          <StorageRing segments={segments} capacityBytes={capacityBytes} size={200} strokeWidth={16} />
+          {deviceStorage.status === 'ready' ? (
+            <Text variant="caption" color="textDim" align="center" style={styles.capacityCaption}>
+              {`${formatBytesText(deviceStorage.storage.freeBytes)} free of ${formatBytesText(
+                deviceStorage.storage.totalBytes,
+              )}`}
+              {deviceStorage.storage.isSimulator ? ' · Simulator disk, not a phone' : ''}
+            </Text>
+          ) : null}
         </View>
 
         {CATEGORIES.map(category => {
@@ -115,5 +134,6 @@ const styles = StyleSheet.create({
   content: { paddingBottom: 16 },
   header: { paddingTop: 8, paddingBottom: 4 },
   ringWrap: { alignItems: 'center', paddingVertical: 24 },
+  capacityCaption: { marginTop: 12 },
   footer: { paddingTop: 8 },
 });
