@@ -1,4 +1,4 @@
-import { formatBytes, formatBytesText, pluralize } from '../format';
+import { formatBytes, formatBytesText, formatDuration, pluralize } from '../format';
 
 describe('formatBytes', () => {
   it('uses base-1000 units so figures match what iOS Settings shows', () => {
@@ -38,5 +38,26 @@ describe('pluralize', () => {
 
   it('accepts an irregular plural', () => {
     expect(pluralize(2, 'entry', 'entries')).toBe('2 entries');
+  });
+});
+
+describe('formatDuration', () => {
+  it('pads seconds under a minute', () => {
+    expect(formatDuration(47)).toBe('0:47');
+    expect(formatDuration(3)).toBe('0:03');
+  });
+
+  it('carries into minutes past 60 seconds', () => {
+    expect(formatDuration(723)).toBe('12:03');
+  });
+
+  it('rounds fractional seconds rather than truncating oddly', () => {
+    expect(formatDuration(59.6)).toBe('1:00');
+  });
+
+  it('treats missing or non-finite durations as zero rather than throwing', () => {
+    expect(formatDuration(0)).toBe('0:00');
+    expect(formatDuration(-5)).toBe('0:00');
+    expect(formatDuration(Number.NaN)).toBe('0:00');
   });
 });

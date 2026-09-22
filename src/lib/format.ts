@@ -44,3 +44,11 @@ export const formatBytesText = (bytes: number): string => formatBytes(bytes).tex
 /** "1 photo" / "248 photos", so call sites stop hand-rolling plurals. */
 export const pluralize = (count: number, singular: string, plural = `${singular}s`): string =>
   `${count.toLocaleString()} ${count === 1 ? singular : plural}`;
+
+/** "0:47" under a minute, "12:03" at or past one — the pattern every video app uses. */
+export const formatDuration = (seconds: number): string => {
+  const safe = Number.isFinite(seconds) && seconds > 0 ? Math.round(seconds) : 0;
+  const mins = Math.floor(safe / 60);
+  const secs = safe % 60;
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+};

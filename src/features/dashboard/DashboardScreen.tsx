@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -12,6 +12,8 @@ import {
   type RingSegment,
 } from '../../design-system';
 import { useDeviceStorage } from '../../hooks/useDeviceStorage';
+import { usePermissions } from '../../hooks/usePermissions';
+import { useScanStore } from '../../stores/useScanStore';
 import { formatBytesText, pluralize } from '../../lib/format';
 import type { RootStackParamList } from '../../navigation/types';
 import type { CategoryId, CategorySummary } from '../../types/domain';
@@ -39,14 +41,15 @@ const CATEGORIES: ReadonlyArray<{
 ];
 
 /**
- * Placeholder figures so the shell is reviewable before the native scanners
- * land in phase 2. Replaced wholesale by the scan store — no component below
- * this line knows where the numbers come from.
+ * Similar Photos and Duplicate Contacts still have no native scanner (Vision
+ * similarity and Contacts land in later phases) — these two stay placeholder
+ * until then. Screenshots and Large Videos below are replaced with the real
+ * scan the moment it completes.
  */
 const PLACEHOLDER: Record<CategoryId, CategorySummary> = {
   similarPhotos: { id: 'similarPhotos', itemCount: 248, reclaimableBytes: 4_200_000_000 },
-  screenshots: { id: 'screenshots', itemCount: 612, reclaimableBytes: 1_800_000_000 },
-  largeVideos: { id: 'largeVideos', itemCount: 23, reclaimableBytes: 6_400_000_000 },
+  screenshots: { id: 'screenshots', itemCount: 0, reclaimableBytes: 0 },
+  largeVideos: { id: 'largeVideos', itemCount: 0, reclaimableBytes: 0 },
   duplicateContacts: { id: 'duplicateContacts', itemCount: 37, reclaimableBytes: 0 },
 };
 
@@ -54,11 +57,43 @@ export const DashboardScreen: React.FC = () => {
   const theme = useTheme();
   const navigation = useNavigation<Nav>();
   const deviceStorage = useDeviceStorage();
+  const permissions = usePermissions();
+  const scan = useScanStore();
+  // Selected separately so the effect below depends on a stable function
+  // reference rather than the whole store object, which changes identity on
+  // every status/summary update.
+  const runScan = useScanStore(s => s.scan);
 
-  // Reclaimable-per-category figures are still placeholder data — real scans
-  // land in phase 3/4. Device capacity below is real, read from the native
-  // module, and is the only thing this screen currently reports truthfully.
-  const summaries = PLACEHOLDER;
+  // A scan needs at least some Photos access; `.limited` still lets us scan
+  // whatever the user has granted. Runs once per permission grant, not on
+  // every render — the store itself guards against overlapping scans.
+  useEffect(() => {
+    if (permissions.photos === 'authorized' || permissions.photos === 'limited') {
+      runScan();
+    }
+  }, [permissions.photos, runScan]);
+
+  // Only show a category row as "pending" once a scan has actually been
+  // requested — before Photos access is granted, `idle` just means nothing
+  // has been asked for yet, not that a scan is running.
+  const scanPending = scan.status === 'scanning';
+
+  const summaries = useMemo<Record<CategoryId, CategorySummary>>(() => {
+    if (scan.status !== 'ready' || !scan.summary) return PLACEHOLDER;
+    return {
+      ...PLACEHOLDER,
+      screenshots: {
+        id: 'screenshots',
+        itemCount: scan.summary.screenshotCount,
+        reclaimableBytes: scan.summary.screenshotBytes,
+      },
+      largeVideos: {
+        id: 'largeVideos',
+        itemCount: scan.summary.largeVideoCount,
+        reclaimableBytes: scan.summary.largeVideoBytes,
+      },
+    };
+  }, [scan.status, scan.summary]);
 
   const segments = useMemo<RingSegment[]>(
     () =>
@@ -103,15 +138,19 @@ export const DashboardScreen: React.FC = () => {
 
         {CATEGORIES.map(category => {
           const summary = summaries[category.id];
+          const pending = scanPending && (category.id === 'screenshots' || category.id === 'largeVideos');
           return (
             <CategoryRow
               key={category.id}
               label={category.label}
               color={theme.category[category.id]}
+              pending={pending}
               value={
-                category.measuredInBytes
-                  ? formatBytesText(summary.reclaimableBytes)
-                  : String(summary.itemCount)
+                pending
+                  ? 'Scanning…'
+                  : category.measuredInBytes
+                    ? formatBytesText(summary.reclaimableBytes)
+                    : String(summary.itemCount)
               }
               onPress={() => navigation.navigate(category.route as never)}
             />

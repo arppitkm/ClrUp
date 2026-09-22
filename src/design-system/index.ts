@@ -7,3 +7,4 @@ export { Button } from './components/Button';
 export { StorageRing, type RingSegment } from './components/StorageRing';
 export { CategoryRow } from './components/CategoryRow';
 export { PermissionCard } from './components/PermissionCard';
+export { SelectionBadge } from './components/SelectionBadge';

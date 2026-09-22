@@ -16,6 +16,8 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		940D63C1471D40F79C32ECB6 /* PermissionsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A4A3304B9D4F568D1DE753 /* PermissionsProvider.swift */; };
 		C1DB2B8949DD45D4A8509D4F /* RCTPermissions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0C7AAE0CAEC1414EBDBE4CBB /* RCTPermissions.mm */; };
+		4E21A2CF15244E7BAAC3EF26 /* PhotoScannerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DC5981EACB4046917DA0A1 /* PhotoScannerProvider.swift */; };
+		F138577E875C40A9A46354D5 /* RCTPhotoScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = CD7E22BFEF2740CDB33956E4 /* RCTPhotoScanner.mm */; };
 		E35F976DF9124E6FA31CF07C /* RCTDeviceStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = A8F960571547487E87AED063 /* RCTDeviceStorage.mm */; };
 		FC6C8E3EC78D44F9849E8806 /* DeviceStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793DB453AC2045569E3BA3F3 /* DeviceStorageProvider.swift */; };
 /* End PBXBuildFile section */
@@ -23,6 +25,8 @@
 /* Begin PBXFileReference section */
 		0004DEDD9A164AE5B10AAFDC /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
 		0C7AAE0CAEC1414EBDBE4CBB /* RCTPermissions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTPermissions.mm; path = ClrUp/Native/RCTPermissions.mm; sourceTree = "<group>"; };
+		F5DC5981EACB4046917DA0A1 /* PhotoScannerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoScannerProvider.swift; path = ClrUp/Native/PhotoScannerProvider.swift; sourceTree = "<group>"; };
+		CD7E22BFEF2740CDB33956E4 /* RCTPhotoScanner.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTPhotoScanner.mm; path = ClrUp/Native/RCTPhotoScanner.mm; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ClrUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClrUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ClrUp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ClrUp/Info.plist; sourceTree = "<group>"; };
@@ -121,6 +125,8 @@
 				A8F960571547487E87AED063 /* RCTDeviceStorage.mm */,
 				D0A4A3304B9D4F568D1DE753 /* PermissionsProvider.swift */,
 				0C7AAE0CAEC1414EBDBE4CBB /* RCTPermissions.mm */,
+				F5DC5981EACB4046917DA0A1 /* PhotoScannerProvider.swift */,
+				CD7E22BFEF2740CDB33956E4 /* RCTPhotoScanner.mm */,
 			);
 			name = Native;
 			sourceTree = "<group>";
@@ -279,6 +285,8 @@
 				E35F976DF9124E6FA31CF07C /* RCTDeviceStorage.mm in Sources */,
 				940D63C1471D40F79C32ECB6 /* PermissionsProvider.swift in Sources */,
 				C1DB2B8949DD45D4A8509D4F /* RCTPermissions.mm in Sources */,
+				4E21A2CF15244E7BAAC3EF26 /* PhotoScannerProvider.swift in Sources */,
+				F138577E875C40A9A46354D5 /* RCTPhotoScanner.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
