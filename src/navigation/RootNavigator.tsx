@@ -4,9 +4,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from '../design-system';
 import { DashboardScreen } from '../features/dashboard/DashboardScreen';
 import { SimilarPhotosScreen } from '../features/photos/SimilarPhotosScreen';
+import { BlurryPhotosScreen } from '../features/photos/BlurryPhotosScreen';
 import { ScreenshotsScreen } from '../features/screenshots/ScreenshotsScreen';
 import { LargeVideosScreen } from '../features/videos/LargeVideosScreen';
 import { DuplicateContactsScreen } from '../features/contacts/DuplicateContactsScreen';
+import { SwipeCleanupScreen } from '../features/swipe/SwipeCleanupScreen';
+import { PrivateVaultScreen } from '../features/vault/PrivateVaultScreen';
 import { ReviewScreen } from '../features/review/ReviewScreen';
 import { ResultScreen } from '../features/review/ResultScreen';
 import type { RootStackParamList } from './types';
@@ -43,9 +46,12 @@ export const RootNavigator: React.FC = () => {
         }}>
         <Stack.Screen name="Dashboard" component={DashboardScreen} options={{ headerShown: false }} />
         <Stack.Screen name="SimilarPhotos" component={SimilarPhotosScreen} options={{ title: 'Similar Photos' }} />
+        <Stack.Screen name="BlurryPhotos" component={BlurryPhotosScreen} options={{ title: 'Blurry Photos' }} />
         <Stack.Screen name="Screenshots" component={ScreenshotsScreen} options={{ title: 'Screenshots' }} />
         <Stack.Screen name="LargeVideos" component={LargeVideosScreen} options={{ title: 'Large Videos' }} />
         <Stack.Screen name="DuplicateContacts" component={DuplicateContactsScreen} options={{ title: 'Duplicate Contacts' }} />
+        <Stack.Screen name="SwipeCleanup" component={SwipeCleanupScreen} options={{ title: 'Swipe Cleanup' }} />
+        <Stack.Screen name="PrivateVault" component={PrivateVaultScreen} options={{ title: 'Private Vault' }} />
         <Stack.Screen name="Review" component={ReviewScreen} options={{ title: 'Review' }} />
         <Stack.Screen
           name="Result"

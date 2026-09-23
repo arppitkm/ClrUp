@@ -35,6 +35,8 @@
 	</dict>
 	<key>NSContactsUsageDescription</key>
 	<string>ClrUp checks your contacts for duplicates so you can merge or remove them. Nothing leaves your phone.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>ClrUp uses Face ID to lock your Private Vault, so only you can view photos you've marked private.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>ClrUp scans your photo library on this device to find similar photos, screenshots, and large videos you can safely delete. Nothing is uploaded or shared.</string>
 	<key>RCTNewArchEnabled</key>

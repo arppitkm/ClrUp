@@ -8,19 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-ClrUp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-ClrUp.a */; };
+		0D3F547F06FD4C5CB355B532 /* AppStatsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51304EAF8677466F9DE867B5 /* AppStatsProvider.swift */; };
 		105462422E0A43A59849F13F /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0004DEDD9A164AE5B10AAFDC /* PhotosUI.framework */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		1E9E0F0752614AC393DAE936 /* PHAssetSizeEstimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2757AAEC7DDF4545B25DD09C /* PHAssetSizeEstimator.swift */; };
+		20A2E763B61249C1B3D1CE73 /* PrivateVaultProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79FDD09648D4469F91681412 /* PrivateVaultProvider.swift */; };
 		26FF601812C84119B4656A18 /* ContactsDuplicatesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15B30913FE1B4FC5AB3B4827 /* ContactsDuplicatesProvider.swift */; };
 		469387AB63BC4189B9E00BFF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8EE56EB87D4929BF96EF00 /* SceneDelegate.swift */; };
 		4E21A2CF15244E7BAAC3EF26 /* PhotoScannerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DC5981EACB4046917DA0A1 /* PhotoScannerProvider.swift */; };
 		51C8FE92163C35E2F4488B57 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		5B99049B81A14EC48774C4A0 /* RCTContactsDuplicates.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5D34BD37943B4EE0823BD597 /* RCTContactsDuplicates.mm */; };
 		6AABD6918EB4400D85BB5E42 /* TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8957386E44634FD8925A128B /* TopViewController.swift */; };
+		6EF48A49E731420F85C5FCD9 /* RCTPrivateVault.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5348528F4527455AB9DD122F /* RCTPrivateVault.mm */; };
+		70D23C23F7D941748E0A65F2 /* RCTBlurryPhotos.mm in Sources */ = {isa = PBXBuildFile; fileRef = 900C83A937574694B89F0602 /* RCTBlurryPhotos.mm */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
+		789AA17529E24DD1A824A4C2 /* BlurryPhotosProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8281B99797574420BD67F592 /* BlurryPhotosProvider.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		83B4D2C2A0CB4ED89C2FC7B7 /* ImageSharpness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EDB793C08D24D7CB573AD6D /* ImageSharpness.swift */; };
 		940D63C1471D40F79C32ECB6 /* PermissionsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A4A3304B9D4F568D1DE753 /* PermissionsProvider.swift */; };
+		9B645BD3279C4D78B2BE5AC1 /* RCTAppStats.mm in Sources */ = {isa = PBXBuildFile; fileRef = 08FB6FFCAD3149BDB44AFF60 /* RCTAppStats.mm */; };
+		A3BD85EC300945FEAA75BDBD /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00D30B605611450E812B9DDD /* LocalAuthentication.framework */; };
 		B96A57D8D27C469DB059300B /* RCTSimilarPhotos.mm in Sources */ = {isa = PBXBuildFile; fileRef = D9DC7895CBFB4E31998C2945 /* RCTSimilarPhotos.mm */; };
+		6781277F7DB34214B86A015C /* PrivateVaultStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCABC252E2749448F7A92FB /* PrivateVaultStore.swift */; };
 		C1DB2B8949DD45D4A8509D4F /* RCTPermissions.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0C7AAE0CAEC1414EBDBE4CBB /* RCTPermissions.mm */; };
 		E35F976DF9124E6FA31CF07C /* RCTDeviceStorage.mm in Sources */ = {isa = PBXBuildFile; fileRef = A8F960571547487E87AED063 /* RCTDeviceStorage.mm */; };
 		EB0A08B957784BA88519ED8D /* SimilarPhotosProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76330053274D410897C11C8D /* SimilarPhotosProvider.swift */; };
@@ -30,6 +39,8 @@
 
 /* Begin PBXFileReference section */
 		0004DEDD9A164AE5B10AAFDC /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
+		00D30B605611450E812B9DDD /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		08FB6FFCAD3149BDB44AFF60 /* RCTAppStats.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTAppStats.mm; path = ClrUp/Native/RCTAppStats.mm; sourceTree = "<group>"; };
 		0C7AAE0CAEC1414EBDBE4CBB /* RCTPermissions.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTPermissions.mm; path = ClrUp/Native/RCTPermissions.mm; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* ClrUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClrUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = ClrUp/Images.xcassets; sourceTree = "<group>"; };
@@ -38,19 +49,26 @@
 		15B30913FE1B4FC5AB3B4827 /* ContactsDuplicatesProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContactsDuplicatesProvider.swift; path = ClrUp/Native/ContactsDuplicatesProvider.swift; sourceTree = "<group>"; };
 		2757AAEC7DDF4545B25DD09C /* PHAssetSizeEstimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PHAssetSizeEstimator.swift; path = ClrUp/Native/PHAssetSizeEstimator.swift; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-ClrUp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClrUp.debug.xcconfig"; path = "Target Support Files/Pods-ClrUp/Pods-ClrUp.debug.xcconfig"; sourceTree = "<group>"; };
+		3EDB793C08D24D7CB573AD6D /* ImageSharpness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageSharpness.swift; path = ClrUp/Native/ImageSharpness.swift; sourceTree = "<group>"; };
 		4B8EE56EB87D4929BF96EF00 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ClrUp/SceneDelegate.swift; sourceTree = "<group>"; };
+		51304EAF8677466F9DE867B5 /* AppStatsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppStatsProvider.swift; path = ClrUp/Native/AppStatsProvider.swift; sourceTree = "<group>"; };
+		5348528F4527455AB9DD122F /* RCTPrivateVault.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTPrivateVault.mm; path = ClrUp/Native/RCTPrivateVault.mm; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-ClrUp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClrUp.release.xcconfig"; path = "Target Support Files/Pods-ClrUp/Pods-ClrUp.release.xcconfig"; sourceTree = "<group>"; };
 		5D34BD37943B4EE0823BD597 /* RCTContactsDuplicates.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTContactsDuplicates.mm; path = ClrUp/Native/RCTContactsDuplicates.mm; sourceTree = "<group>"; };
-		8957386E44634FD8925A128B /* TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TopViewController.swift; path = ClrUp/Native/TopViewController.swift; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-ClrUp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClrUp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ClrUp/AppDelegate.swift; sourceTree = "<group>"; };
 		76330053274D410897C11C8D /* SimilarPhotosProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SimilarPhotosProvider.swift; path = ClrUp/Native/SimilarPhotosProvider.swift; sourceTree = "<group>"; };
 		793DB453AC2045569E3BA3F3 /* DeviceStorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeviceStorageProvider.swift; path = ClrUp/Native/DeviceStorageProvider.swift; sourceTree = "<group>"; };
+		79FDD09648D4469F91681412 /* PrivateVaultProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrivateVaultProvider.swift; path = ClrUp/Native/PrivateVaultProvider.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ClrUp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8281B99797574420BD67F592 /* BlurryPhotosProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BlurryPhotosProvider.swift; path = ClrUp/Native/BlurryPhotosProvider.swift; sourceTree = "<group>"; };
+		8957386E44634FD8925A128B /* TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TopViewController.swift; path = ClrUp/Native/TopViewController.swift; sourceTree = "<group>"; };
+		900C83A937574694B89F0602 /* RCTBlurryPhotos.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTBlurryPhotos.mm; path = ClrUp/Native/RCTBlurryPhotos.mm; sourceTree = "<group>"; };
 		A8F960571547487E87AED063 /* RCTDeviceStorage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTDeviceStorage.mm; path = ClrUp/Native/RCTDeviceStorage.mm; sourceTree = "<group>"; };
 		CD7E22BFEF2740CDB33956E4 /* RCTPhotoScanner.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTPhotoScanner.mm; path = ClrUp/Native/RCTPhotoScanner.mm; sourceTree = "<group>"; };
 		D0A4A3304B9D4F568D1DE753 /* PermissionsProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PermissionsProvider.swift; path = ClrUp/Native/PermissionsProvider.swift; sourceTree = "<group>"; };
 		D9DC7895CBFB4E31998C2945 /* RCTSimilarPhotos.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTSimilarPhotos.mm; path = ClrUp/Native/RCTSimilarPhotos.mm; sourceTree = "<group>"; };
+		9BCABC252E2749448F7A92FB /* PrivateVaultStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PrivateVaultStore.swift; path = ClrUp/Native/PrivateVaultStore.swift; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F5DC5981EACB4046917DA0A1 /* PhotoScannerProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PhotoScannerProvider.swift; path = ClrUp/Native/PhotoScannerProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -62,6 +80,7 @@
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-ClrUp.a in Frameworks */,
 				105462422E0A43A59849F13F /* PhotosUI.framework in Frameworks */,
+				A3BD85EC300945FEAA75BDBD /* LocalAuthentication.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +106,7 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				0004DEDD9A164AE5B10AAFDC /* PhotosUI.framework */,
+				00D30B605611450E812B9DDD /* LocalAuthentication.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-ClrUp.a */,
 			);
 			name = Frameworks;
@@ -142,6 +162,14 @@
 				2757AAEC7DDF4545B25DD09C /* PHAssetSizeEstimator.swift */,
 				76330053274D410897C11C8D /* SimilarPhotosProvider.swift */,
 				D9DC7895CBFB4E31998C2945 /* RCTSimilarPhotos.mm */,
+				9BCABC252E2749448F7A92FB /* PrivateVaultStore.swift */,
+				79FDD09648D4469F91681412 /* PrivateVaultProvider.swift */,
+				5348528F4527455AB9DD122F /* RCTPrivateVault.mm */,
+				3EDB793C08D24D7CB573AD6D /* ImageSharpness.swift */,
+				8281B99797574420BD67F592 /* BlurryPhotosProvider.swift */,
+				900C83A937574694B89F0602 /* RCTBlurryPhotos.mm */,
+				51304EAF8677466F9DE867B5 /* AppStatsProvider.swift */,
+				08FB6FFCAD3149BDB44AFF60 /* RCTAppStats.mm */,
 				15B30913FE1B4FC5AB3B4827 /* ContactsDuplicatesProvider.swift */,
 				5D34BD37943B4EE0823BD597 /* RCTContactsDuplicates.mm */,
 				8957386E44634FD8925A128B /* TopViewController.swift */,
@@ -308,6 +336,14 @@
 				1E9E0F0752614AC393DAE936 /* PHAssetSizeEstimator.swift in Sources */,
 				EB0A08B957784BA88519ED8D /* SimilarPhotosProvider.swift in Sources */,
 				B96A57D8D27C469DB059300B /* RCTSimilarPhotos.mm in Sources */,
+				6781277F7DB34214B86A015C /* PrivateVaultStore.swift in Sources */,
+				20A2E763B61249C1B3D1CE73 /* PrivateVaultProvider.swift in Sources */,
+				6EF48A49E731420F85C5FCD9 /* RCTPrivateVault.mm in Sources */,
+				83B4D2C2A0CB4ED89C2FC7B7 /* ImageSharpness.swift in Sources */,
+				789AA17529E24DD1A824A4C2 /* BlurryPhotosProvider.swift in Sources */,
+				70D23C23F7D941748E0A65F2 /* RCTBlurryPhotos.mm in Sources */,
+				0D3F547F06FD4C5CB355B532 /* AppStatsProvider.swift in Sources */,
+				9B645BD3279C4D78B2BE5AC1 /* RCTAppStats.mm in Sources */,
 				26FF601812C84119B4656A18 /* ContactsDuplicatesProvider.swift in Sources */,
 				5B99049B81A14EC48774C4A0 /* RCTContactsDuplicates.mm in Sources */,
 				6AABD6918EB4400D85BB5E42 /* TopViewController.swift in Sources */,
@@ -406,8 +442,8 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FAA4P2657X;
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = FAA4P2657X;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -490,8 +526,8 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FAA4P2657X;
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = FAA4P2657X;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";

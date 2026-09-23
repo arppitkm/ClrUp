@@ -41,7 +41,7 @@ final class PhotoScannerProvider: NSObject {
     }
 
     var largeVideoBytes: Int64 = 0
-    videos.enumerateObjects { asset, _, _ in
+    for asset in videos {
       largeVideoBytes += PHAssetSizeEstimator.bytes(for: asset)
     }
 
@@ -63,9 +63,8 @@ final class PhotoScannerProvider: NSObject {
 
   @objc(videoListWithLimit:)
   func videoList(limit: Int) -> [[String: Any]] {
-    let result = fetchVideos()
     // Sorted largest-first, on the metadata already gathered — no re-fetching.
-    let described = (0..<result.count).map { Self.describe(result.object(at: $0)) }
+    let described = fetchVideos().map(Self.describe)
     let sorted = described.sorted {
       (($0["bytes"] as? Int64) ?? 0) > (($1["bytes"] as? Int64) ?? 0)
     }
@@ -204,8 +203,13 @@ final class PhotoScannerProvider: NSObject {
    * silently matched almost nothing instead of erroring, so it was actually
    * broken from the start. `PHAssetMediaSubtype` is a real Swift OptionSet on
    * the fetched `PHAsset`, so checking it directly is unambiguous.
+   *
+   * Assets marked private are excluded here too — a photo locked in the
+   * Vault shouldn't still surface as a suggestion (or even just a visible
+   * thumbnail) in another screen.
    */
   private func fetchScreenshots() -> [PHAsset] {
+    let privateIds = PrivateVaultStore.ids()
     let options = PHFetchOptions()
     options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
     options.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
@@ -213,17 +217,27 @@ final class PhotoScannerProvider: NSObject {
 
     var screenshots: [PHAsset] = []
     result.enumerateObjects { asset, _, _ in
-      if asset.mediaSubtypes.contains(.photoScreenshot) {
+      if asset.mediaSubtypes.contains(.photoScreenshot) && !privateIds.contains(asset.localIdentifier) {
         screenshots.append(asset)
       }
     }
     return screenshots
   }
 
-  private func fetchVideos() -> PHFetchResult<PHAsset> {
+  /// See `fetchScreenshots()` — private assets are excluded the same way.
+  private func fetchVideos() -> [PHAsset] {
+    let privateIds = PrivateVaultStore.ids()
     let options = PHFetchOptions()
     options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.video.rawValue)
-    return PHAsset.fetchAssets(with: options)
+    let result = PHAsset.fetchAssets(with: options)
+
+    var videos: [PHAsset] = []
+    result.enumerateObjects { asset, _, _ in
+      if !privateIds.contains(asset.localIdentifier) {
+        videos.append(asset)
+      }
+    }
+    return videos
   }
 
   // MARK: Description

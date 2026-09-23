@@ -12,7 +12,7 @@ type ResultRoute = RouteProp<RootStackParamList, 'Result'>;
 /** The payoff screen — shown once, right after a real deletion actually completed. */
 export const ResultScreen: React.FC = () => {
   const navigation = useNavigation<Nav>();
-  const { freedBytes, itemCount } = useRoute<ResultRoute>().params;
+  const { freedBytes, itemCount, lifetimeFreedBytes } = useRoute<ResultRoute>().params;
 
   return (
     <Screen>
@@ -25,6 +25,9 @@ export const ResultScreen: React.FC = () => {
         </Text>
         <Text variant="body" color="textDim" align="center" style={styles.detail}>
           {pluralize(itemCount, 'item')} removed from your library.
+        </Text>
+        <Text variant="caption" color="textDim" align="center" style={styles.lifetime}>
+          {`${formatBytesText(lifetimeFreedBytes)} freed with ClrUp in total`}
         </Text>
       </View>
 
@@ -42,5 +45,6 @@ const styles = StyleSheet.create({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32 },
   freed: { marginTop: 4 },
   detail: { marginTop: 12, maxWidth: 280 },
+  lifetime: { marginTop: 20 },
   footer: { paddingBottom: 32 },
 });

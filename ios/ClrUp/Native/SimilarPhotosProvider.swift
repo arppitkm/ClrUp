@@ -210,7 +210,7 @@ final class SimilarPhotosProvider: NSObject {
     // since it would fabricate false duplicate groups instead of reporting
     // nothing.
     guard let observation = try? Self.featurePrint(for: cgImage) else { return nil }
-    let sharpness = Self.sharpnessScore(cgImage)
+    let sharpness = ImageSharpness.score(cgImage, side: Self.analysisSize)
     let score = Self.qualityScore(info: info, sharpness: sharpness)
     return AssetAnalysis(info: info, featurePrint: observation, qualityScore: score)
   }
@@ -243,50 +243,6 @@ final class SimilarPhotosProvider: NSObject {
   }
 
   /**
-   * Variance-of-Laplacian blur detection: a sharp, detailed image has high
-   * local contrast (large second-derivative response almost everywhere), a
-   * blurry one is smooth (small response almost everywhere). Standard,
-   * well-documented technique — this is a direct implementation of it, run
-   * on a fixed-size grayscale downsample so resolution doesn't bias the
-   * result (that's handled as its own, separate factor in `qualityScore`).
-   */
-  private static func sharpnessScore(_ cgImage: CGImage) -> Double {
-    let size = analysisSize
-    guard
-      let context = CGContext(
-        data: nil, width: size, height: size, bitsPerComponent: 8, bytesPerRow: size,
-        space: CGColorSpaceCreateDeviceGray(), bitmapInfo: CGImageAlphaInfo.none.rawValue
-      )
-    else { return 0 }
-    context.interpolationQuality = .high
-    context.draw(cgImage, in: CGRect(x: 0, y: 0, width: size, height: size))
-    guard let data = context.data else { return 0 }
-    let buffer = data.bindMemory(to: UInt8.self, capacity: size * size)
-
-    var sum = 0.0
-    var sumSquares = 0.0
-    var count = 0
-    for y in 1..<(size - 1) {
-      let row = y * size
-      let rowUp = (y - 1) * size
-      let rowDown = (y + 1) * size
-      for x in 1..<(size - 1) {
-        let center = Int(buffer[row + x])
-        let laplacian =
-          Int(buffer[rowUp + x]) + Int(buffer[rowDown + x]) + Int(buffer[row + x - 1]) + Int(buffer[row + x + 1])
-          - 4 * center
-        let value = Double(laplacian)
-        sum += value
-        sumSquares += value * value
-        count += 1
-      }
-    }
-    guard count > 0 else { return 0 }
-    let mean = sum / Double(count)
-    return sumSquares / Double(count) - mean * mean // variance
-  }
-
-  /**
    * Sharpness dominates (it's what people actually mean by "the good one" in
    * a burst), resolution is a tiebreaker, and explicit user signals
    * (favorited, edited) override both — a photo the user already curated is
@@ -298,7 +254,10 @@ final class SimilarPhotosProvider: NSObject {
    * dropped.
    */
   private static func qualityScore(info: AssetInfo, sharpness: Double) -> Double {
-    var score = sharpness
+    // ImageSharpness.score is a contrast-normalized ratio (typically ~0.3–2),
+    // not a raw magnitude — rescaled here so it still dwarfs the resolution
+    // tiebreaker below, preserving the precedence this function documents.
+    var score = sharpness * 1000
     let megapixels = Double(info.widthPx * info.heightPx) / 1_000_000
     score += megapixels * 40 // tiebreaker: sharpness values from real photos typically dwarf this
     if info.isFavorite { score += 100_000 } // explicit user intent overrides everything else
@@ -313,9 +272,12 @@ final class SimilarPhotosProvider: NSObject {
    * predicate — see the comment on `PhotoScannerProvider.fetchScreenshots()`
    * for why: Photos' predicate evaluator doesn't reliably support the
    * `(mediaSubtype & x)` bitmask form, so it silently matched almost nothing
-   * instead of erroring.
+   * instead of erroring. Private assets are excluded the same way, for the
+   * same reason as every other scanner: a photo locked in the Vault
+   * shouldn't surface elsewhere, even just as a thumbnail.
    */
   private func fetchCandidateAssets() -> [AssetInfo] {
+    let privateIds = PrivateVaultStore.ids()
     let options = PHFetchOptions()
     options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
     let result = PHAsset.fetchAssets(with: options)
@@ -324,6 +286,7 @@ final class SimilarPhotosProvider: NSObject {
     assets.reserveCapacity(result.count)
     result.enumerateObjects { asset, _, _ in
       guard !asset.mediaSubtypes.contains(.photoScreenshot) else { return }
+      guard !privateIds.contains(asset.localIdentifier) else { return }
       assets.append(
         AssetInfo(
           asset: asset,

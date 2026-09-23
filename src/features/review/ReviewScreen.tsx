@@ -10,12 +10,15 @@ import type { RootStackParamList } from '../../navigation/types';
 import { pendingTotalBytes, usePendingDeletionStore, type PendingItem } from '../../stores/usePendingDeletionStore';
 import { useScanStore } from '../../stores/useScanStore';
 import { useSimilarPhotosStore } from '../../stores/useSimilarPhotosStore';
+import { useBlurryPhotosStore } from '../../stores/useBlurryPhotosStore';
+import { useAppStatsStore } from '../../stores/useAppStatsStore';
 import type { CategoryId } from '../../types/domain';
 
 type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 const CATEGORY_LABEL: Record<CategoryId, string> = {
   similarPhotos: 'Similar Photos',
+  blurryPhotos: 'Blurry Photos',
   screenshots: 'Screenshots',
   largeVideos: 'Large Videos',
   duplicateContacts: 'Duplicate Contacts',
@@ -23,7 +26,7 @@ const CATEGORY_LABEL: Record<CategoryId, string> = {
 
 // Fixed, predictable order — matches the dashboard's own category order —
 // rather than whatever order items happened to be added in.
-const CATEGORY_ORDER: CategoryId[] = ['similarPhotos', 'screenshots', 'largeVideos'];
+const CATEGORY_ORDER: CategoryId[] = ['similarPhotos', 'blurryPhotos', 'screenshots', 'largeVideos'];
 
 const ThumbRow: React.FC<{ item: PendingItem; color: string; onRemove: (id: string) => void }> = ({
   item,
@@ -66,6 +69,8 @@ export const ReviewScreen: React.FC = () => {
   const clearItems = usePendingDeletionStore(s => s.clear);
   const rescanLibrary = useScanStore(s => s.scan);
   const rescanSimilar = useSimilarPhotosStore(s => s.scan);
+  const rescanBlurry = useBlurryPhotosStore(s => s.scan);
+  const addLifetimeFreed = useAppStatsStore(s => s.add);
   const [deleting, setDeleting] = useState(false);
 
   const sections = useMemo(() => {
@@ -97,7 +102,9 @@ export const ReviewScreen: React.FC = () => {
         clearItems();
         rescanLibrary();
         rescanSimilar();
-        navigation.replace('Result', { freedBytes: totalBytes, itemCount: totalCount });
+        rescanBlurry();
+        const lifetimeFreedBytes = await addLifetimeFreed(totalBytes);
+        navigation.replace('Result', { freedBytes: totalBytes, itemCount: totalCount, lifetimeFreedBytes });
       }
       // deletedCount === 0 means the user cancelled the system sheet — the
       // cart stays exactly as it was, nothing to report.

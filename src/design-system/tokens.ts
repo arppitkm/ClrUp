@@ -34,6 +34,7 @@ export const palette = {
  */
 export const categoryColor = {
   similarPhotos: '#5B8DEF',
+  blurryPhotos: '#2BC7E0',
   screenshots: '#A16BFF',
   largeVideos: '#FFB020',
   duplicateContacts: '#FF7A9A',

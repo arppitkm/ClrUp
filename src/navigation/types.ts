@@ -7,11 +7,14 @@ import type { CategoryId } from '../types/domain';
 export type RootStackParamList = {
   Dashboard: undefined;
   SimilarPhotos: undefined;
+  BlurryPhotos: undefined;
   Screenshots: undefined;
   LargeVideos: undefined;
   DuplicateContacts: undefined;
+  SwipeCleanup: undefined;
+  PrivateVault: undefined;
   Review: { from: CategoryId | 'dashboard' };
-  Result: { freedBytes: number; itemCount: number };
+  Result: { freedBytes: number; itemCount: number; lifetimeFreedBytes: number };
 };
 
 declare global {
