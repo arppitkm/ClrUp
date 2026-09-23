@@ -118,6 +118,40 @@ final class PhotoScannerProvider: NSObject {
     }
   }
 
+  // MARK: Deletion
+
+  /**
+   * Screenshots, videos, and similar-photo extras all delete through this one
+   * path — `PHAssetChangeRequest.deleteAssets` doesn't care about media type.
+   * `performChanges` itself presents the system's "Delete N Photos?" sheet;
+   * this is the single confirmation for the whole batch, not per-item. If the
+   * user cancels that sheet, `success` comes back false with no error — that
+   * is a normal outcome, not a failure to surface, so it resolves with 0
+   * either way rather than rejecting; only genuine failures reject.
+   */
+  @objc(deleteAssetsWithIds:completion:)
+  func deleteAssets(ids: [String], completion: @escaping (NSNumber?, Error?) -> Void) {
+    let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: ids, options: nil)
+    guard fetchResult.count > 0 else {
+      completion(NSNumber(value: 0), nil)
+      return
+    }
+
+    PHPhotoLibrary.shared().performChanges({
+      PHAssetChangeRequest.deleteAssets(fetchResult)
+    }) { success, _ in
+      // Deliberately never rejects here: a cancelled system sheet and a
+      // genuine failure both surface the same way to Apple's completion
+      // handler (success = false), with no reliable way to tell them apart
+      // across iOS versions. Resolving with 0 either way matches this
+      // method's documented contract and avoids surfacing a scary native
+      // error for what is usually just the user tapping Cancel.
+      DispatchQueue.main.async {
+        completion(NSNumber(value: success ? fetchResult.count : 0), nil)
+      }
+    }
+  }
+
   // MARK: Fetch helpers
 
   /**

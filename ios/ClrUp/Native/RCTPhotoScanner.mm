@@ -66,6 +66,19 @@ RCT_EXPORT_MODULE(PhotoScanner)
   }];
 }
 
+- (void)deleteAssets:(NSArray *)ids
+              resolve:(RCTPromiseResolveBlock)resolve
+               reject:(RCTPromiseRejectBlock)reject
+{
+  [_provider deleteAssetsWithIds:ids completion:^(NSNumber *deletedCount, NSError *error) {
+    if (deletedCount) {
+      resolve(deletedCount);
+    } else {
+      reject(@"delete_assets_failed", error.localizedDescription ?: @"Could not delete.", error);
+    }
+  }];
+}
+
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams &)params
 {

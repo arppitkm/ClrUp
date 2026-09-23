@@ -1,9 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button, Screen, SelectionBadge, Text, useTheme } from '../../design-system';
 import { useThumbnail } from '../../hooks/useThumbnail';
 import { formatBytesText, formatDuration, pluralize } from '../../lib/format';
+import type { RootStackParamList } from '../../navigation/types';
 import NativePhotoScanner, { type VideoAsset } from '../../native/NativePhotoScanner';
+import { usePendingDeletionStore } from '../../stores/usePendingDeletionStore';
+
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 type LoadState = 'loading' | 'ready' | 'error';
 
@@ -62,6 +68,8 @@ const Row: React.FC<{
 
 export const LargeVideosScreen: React.FC = () => {
   const theme = useTheme();
+  const navigation = useNavigation<Nav>();
+  const addToPending = usePendingDeletionStore(s => s.add);
   const [state, setState] = useState<LoadState>('loading');
   const [assets, setAssets] = useState<VideoAsset[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -154,8 +162,12 @@ export const LargeVideosScreen: React.FC = () => {
             label="Add to Review"
             detail={`${pluralize(selected.size, 'video')} · ${formatBytesText(selectedBytes)}`}
             onPress={() => {
-              // Wired to the shared pending-deletion store once Review (phase
-              // 6) lands — selection itself is fully functional today.
+              addToPending(
+                assets
+                  .filter(a => selected.has(a.id))
+                  .map(a => ({ id: a.id, category: 'largeVideos' as const, bytes: a.bytes })),
+              );
+              navigation.navigate('Review', { from: 'largeVideos' });
             }}
           />
         </View>

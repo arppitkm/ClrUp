@@ -42,6 +42,17 @@ export interface Spec extends TurboModule {
    * URI — never base64 over the bridge, which would be fatal on a large grid.
    */
   requestThumbnail(assetId: string, targetWidthPx: number): Promise<string>;
+
+  /**
+   * Batch-deletes assets (screenshots, videos, and similar-photo extras all
+   * share this one path — deletion doesn't care about media type). Triggers
+   * exactly one native system confirmation sheet for the whole batch; this
+   * function itself never asks for confirmation a second time. Resolves with
+   * the number actually deleted — 0 means the user cancelled the system
+   * prompt or nothing was deletable, which the caller treats the same way
+   * (nothing removed, don't touch local state).
+   */
+  deleteAssets(ids: string[]): Promise<number>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('PhotoScanner');

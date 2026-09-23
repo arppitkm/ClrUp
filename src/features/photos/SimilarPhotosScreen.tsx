@@ -1,10 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button, Card, Screen, SelectionBadge, Text, useTheme } from '../../design-system';
 import { useThumbnail } from '../../hooks/useThumbnail';
 import { formatBytesText, pluralize } from '../../lib/format';
+import type { RootStackParamList } from '../../navigation/types';
 import type { SimilarAsset, SimilarGroup } from '../../native/NativeSimilarPhotos';
+import { usePendingDeletionStore } from '../../stores/usePendingDeletionStore';
 import { useSimilarPhotosStore } from '../../stores/useSimilarPhotosStore';
+
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 const THUMB_SIZE = 118;
 
@@ -94,6 +100,8 @@ const GroupCard: React.FC<{
 
 export const SimilarPhotosScreen: React.FC = () => {
   const theme = useTheme();
+  const navigation = useNavigation<Nav>();
+  const addToPending = usePendingDeletionStore(s => s.add);
   const { status, groups, scan } = useSimilarPhotosStore();
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [initialized, setInitialized] = useState(false);
@@ -127,13 +135,17 @@ export const SimilarPhotosScreen: React.FC = () => {
     });
   }, []);
 
-  const selectedBytes = useMemo(() => {
+  const assetById = useMemo(() => {
     const byId = new Map<string, SimilarAsset>();
     for (const group of groups) for (const asset of group.assets) byId.set(asset.id, asset);
+    return byId;
+  }, [groups]);
+
+  const selectedBytes = useMemo(() => {
     let total = 0;
-    for (const id of selected) total += byId.get(id)?.bytes ?? 0;
+    for (const id of selected) total += assetById.get(id)?.bytes ?? 0;
     return total;
-  }, [groups, selected]);
+  }, [assetById, selected]);
 
   if (status === 'idle' || status === 'scanning') {
     return (
@@ -196,8 +208,13 @@ export const SimilarPhotosScreen: React.FC = () => {
             label="Add to Review"
             detail={`${pluralize(selected.size, 'photo')} · ${formatBytesText(selectedBytes)}`}
             onPress={() => {
-              // Wired to the shared pending-deletion store once Review (phase
-              // 6) lands — selection itself is fully functional today.
+              const items = Array.from(selected, id => ({
+                id,
+                category: 'similarPhotos' as const,
+                bytes: assetById.get(id)?.bytes ?? 0,
+              }));
+              addToPending(items);
+              navigation.navigate('Review', { from: 'similarPhotos' });
             }}
           />
         </View>

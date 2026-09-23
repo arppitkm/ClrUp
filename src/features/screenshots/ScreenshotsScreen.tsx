@@ -1,10 +1,16 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button, Screen, SelectionBadge, Text, useTheme } from '../../design-system';
 import { useThumbnail } from '../../hooks/useThumbnail';
 import { formatBytesText, pluralize } from '../../lib/format';
+import type { RootStackParamList } from '../../navigation/types';
 import NativePhotoScanner, { type ScreenshotAsset } from '../../native/NativePhotoScanner';
+import { usePendingDeletionStore } from '../../stores/usePendingDeletionStore';
+
+type Nav = NativeStackNavigationProp<RootStackParamList>;
 
 const COLUMNS = 3;
 const GRID_GAP = 3;
@@ -47,6 +53,8 @@ export const ScreenshotsScreen: React.FC = () => {
   const { width } = useWindowDimensions();
   const cellSize = (width - theme.spacing.lg * 2 - GRID_GAP * (COLUMNS - 1)) / COLUMNS;
 
+  const navigation = useNavigation<Nav>();
+  const addToPending = usePendingDeletionStore(s => s.add);
   const [state, setState] = useState<LoadState>('loading');
   const [assets, setAssets] = useState<ScreenshotAsset[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -156,8 +164,12 @@ export const ScreenshotsScreen: React.FC = () => {
             label="Add to Review"
             detail={`${pluralize(selected.size, 'screenshot')} · ${formatBytesText(selectedBytes)}`}
             onPress={() => {
-              // Wired to the shared pending-deletion store once Review (phase
-              // 6) lands — selection itself is fully functional today.
+              addToPending(
+                assets
+                  .filter(a => selected.has(a.id))
+                  .map(a => ({ id: a.id, category: 'screenshots' as const, bytes: a.bytes })),
+              );
+              navigation.navigate('Review', { from: 'screenshots' });
             }}
           />
         </View>

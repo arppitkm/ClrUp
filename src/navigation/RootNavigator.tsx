@@ -8,6 +8,7 @@ import { ScreenshotsScreen } from '../features/screenshots/ScreenshotsScreen';
 import { LargeVideosScreen } from '../features/videos/LargeVideosScreen';
 import { DuplicateContactsScreen } from '../features/contacts/DuplicateContactsScreen';
 import { ReviewScreen } from '../features/review/ReviewScreen';
+import { ResultScreen } from '../features/review/ResultScreen';
 import type { RootStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -46,6 +47,11 @@ export const RootNavigator: React.FC = () => {
         <Stack.Screen name="LargeVideos" component={LargeVideosScreen} options={{ title: 'Large Videos' }} />
         <Stack.Screen name="DuplicateContacts" component={DuplicateContactsScreen} options={{ title: 'Duplicate Contacts' }} />
         <Stack.Screen name="Review" component={ReviewScreen} options={{ title: 'Review' }} />
+        <Stack.Screen
+          name="Result"
+          component={ResultScreen}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
