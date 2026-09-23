@@ -53,6 +53,13 @@ export interface Spec extends TurboModule {
    * (nothing removed, don't touch local state).
    */
   deleteAssets(ids: string[]): Promise<number>;
+
+  /**
+   * Presents Apple's own full-screen video player over the app — real
+   * playback controls, no custom player to build or a third-party library to
+   * pull in for what the brief only asks for as a preview.
+   */
+  presentVideoPlayer(assetId: string): Promise<void>;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('PhotoScanner');

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button, Screen, SelectionBadge, Text, useTheme } from '../../design-system';
@@ -25,6 +25,18 @@ const Row: React.FC<{
 }> = ({ asset, selected, onToggle }) => {
   const theme = useTheme();
   const uri = useThumbnail(asset.id, THUMB_SIZE * 2);
+  const [playing, setPlaying] = useState(false);
+
+  const play = useCallback(async () => {
+    setPlaying(true);
+    try {
+      await NativePhotoScanner.presentVideoPlayer(asset.id);
+    } catch (err) {
+      Alert.alert('Couldn’t play video', err instanceof Error ? err.message : 'Please try again.');
+    } finally {
+      setPlaying(false);
+    }
+  }, [asset.id]);
 
   return (
     <Pressable
@@ -41,18 +53,34 @@ const Row: React.FC<{
           padding: theme.spacing.sm,
         },
       ]}>
-      <View style={styles.thumbWrap}>
+      {/* A Pressable nested inside another Pressable claims its own touches,
+          so tapping the thumbnail plays the video instead of toggling
+          selection — the rest of the row still does that. */}
+      <Pressable
+        onPress={play}
+        accessibilityRole="button"
+        accessibilityLabel="Play video preview"
+        style={styles.thumbWrap}>
         {uri ? (
           <Image source={{ uri }} style={styles.thumb} resizeMode="cover" />
         ) : (
           <View style={[styles.thumb, { backgroundColor: theme.color.border }]} />
         )}
+        <View style={styles.playOverlay}>
+          {playing ? (
+            <ActivityIndicator size="small" color="#FFFFFF" />
+          ) : (
+            <Text variant="label" color="#FFFFFF" style={styles.playGlyph}>
+              ▶
+            </Text>
+          )}
+        </View>
         <View style={styles.durationBadge}>
           <Text variant="caption" color="#FFFFFF">
             {formatDuration(asset.durationSeconds)}
           </Text>
         </View>
-      </View>
+      </Pressable>
 
       <View style={styles.meta}>
         <Text variant="label">{formatBytesText(asset.bytes)}</Text>
@@ -183,6 +211,22 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center' },
   thumbWrap: { width: THUMB_SIZE, height: THUMB_SIZE, marginRight: 12 },
   thumb: { width: '100%', height: '100%', borderRadius: 8 },
+  playOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  playGlyph: {
+    // Nudge the glyph so its visual center lands in the circle, not its box.
+    marginLeft: 2,
+    textShadowColor: 'rgba(0,0,0,0.5)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
   durationBadge: {
     position: 'absolute',
     bottom: 4,

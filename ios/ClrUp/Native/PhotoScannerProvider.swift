@@ -1,3 +1,4 @@
+import AVKit
 import Foundation
 import Photos
 import UIKit
@@ -5,6 +6,7 @@ import UIKit
 enum PhotoScannerError: Error {
   case assetNotFound
   case thumbnailFailed
+  case notPresentable
 }
 
 /**
@@ -68,6 +70,46 @@ final class PhotoScannerProvider: NSObject {
       (($0["bytes"] as? Int64) ?? 0) > (($1["bytes"] as? Int64) ?? 0)
     }
     return limit > 0 ? Array(sorted.prefix(limit)) : sorted
+  }
+
+  /**
+   * Presents Apple's own `AVPlayerViewController` over whatever's currently
+   * showing — full playback controls, AirPlay, fullscreen, all for free,
+   * rather than building a custom player for what the brief only requires as
+   * "a preview". No third-party video library needed for this either: the
+   * whole feature lives in AVKit, part of the system.
+   */
+  @objc(presentVideoPlayerForAsset:completion:)
+  func presentVideoPlayer(assetId: String, completion: @escaping (Bool, Error?) -> Void) {
+    let fetch = PHAsset.fetchAssets(withLocalIdentifiers: [assetId], options: nil)
+    guard let asset = fetch.firstObject, asset.mediaType == .video else {
+      completion(false, PhotoScannerError.assetNotFound)
+      return
+    }
+
+    let options = PHVideoRequestOptions()
+    options.isNetworkAccessAllowed = true
+    options.deliveryMode = .automatic
+
+    PHImageManager.default().requestPlayerItem(forVideo: asset, options: options) { playerItem, _ in
+      DispatchQueue.main.async {
+        guard let playerItem else {
+          completion(false, PhotoScannerError.thumbnailFailed)
+          return
+        }
+        guard let root = TopViewController.find() else {
+          completion(false, PhotoScannerError.notPresentable)
+          return
+        }
+        let player = AVPlayer(playerItem: playerItem)
+        let controller = AVPlayerViewController()
+        controller.player = player
+        root.present(controller, animated: true) {
+          player.play()
+        }
+        completion(true, nil)
+      }
+    }
   }
 
   // MARK: Thumbnails

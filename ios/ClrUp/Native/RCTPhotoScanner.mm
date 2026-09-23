@@ -79,6 +79,19 @@ RCT_EXPORT_MODULE(PhotoScanner)
   }];
 }
 
+- (void)presentVideoPlayer:(NSString *)assetId
+                    resolve:(RCTPromiseResolveBlock)resolve
+                     reject:(RCTPromiseRejectBlock)reject
+{
+  [_provider presentVideoPlayerForAsset:assetId completion:^(BOOL presented, NSError *error) {
+    if (presented) {
+      resolve(nil);
+    } else {
+      reject(@"present_video_player_failed", error.localizedDescription ?: @"Could not play video.", error);
+    }
+  }];
+}
+
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
     (const facebook::react::ObjCTurboModule::InitParams &)params
 {

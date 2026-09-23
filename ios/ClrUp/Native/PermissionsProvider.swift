@@ -30,7 +30,7 @@ final class PermissionsProvider: NSObject {
   @objc(presentLimitedLibraryPickerWithCompletion:)
   func presentLimitedLibraryPicker(completion: @escaping () -> Void) {
     DispatchQueue.main.async {
-      guard let root = Self.topViewController() else {
+      guard let root = TopViewController.find() else {
         completion()
         return
       }
@@ -99,19 +99,4 @@ final class PermissionsProvider: NSObject {
     }
   }
 
-  /// The picker and the Settings deep link both need a presenting view
-  /// controller; this finds the foreground scene's topmost one.
-  private static func topViewController() -> UIViewController? {
-    let scene = UIApplication.shared.connectedScenes
-      .compactMap { $0 as? UIWindowScene }
-      .first { $0.activationState == .foregroundActive }
-
-    guard var top = scene?.windows.first(where: { $0.isKeyWindow })?.rootViewController else {
-      return nil
-    }
-    while let presented = top.presentedViewController {
-      top = presented
-    }
-    return top
-  }
 }

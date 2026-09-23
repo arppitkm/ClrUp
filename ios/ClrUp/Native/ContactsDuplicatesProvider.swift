@@ -16,6 +16,7 @@ final class ContactsDuplicatesProvider: NSObject {
   private let store = CNContactStore()
   private static let keysToFetch: [CNKeyDescriptor] = [
     CNContactGivenNameKey as CNKeyDescriptor,
+    CNContactMiddleNameKey as CNKeyDescriptor,
     CNContactFamilyNameKey as CNKeyDescriptor,
     CNContactPhoneNumbersKey as CNKeyDescriptor,
     CNContactEmailAddressesKey as CNKeyDescriptor,
@@ -115,6 +116,7 @@ final class ContactsDuplicatesProvider: NSObject {
         // Fill in a name part only if the primary is missing it — the
         // primary's own name is never overwritten, only completed.
         if primary.givenName.isEmpty { primary.givenName = duplicate.givenName }
+        if primary.middleName.isEmpty { primary.middleName = duplicate.middleName }
         if primary.familyName.isEmpty { primary.familyName = duplicate.familyName }
       }
 
@@ -249,7 +251,9 @@ private struct ContactRecord {
 
   init(_ contact: CNContact) {
     id = contact.identifier
-    let name = [contact.givenName, contact.familyName].filter { !$0.isEmpty }.joined(separator: " ")
+    let name = [contact.givenName, contact.middleName, contact.familyName]
+      .filter { !$0.isEmpty }
+      .joined(separator: " ")
     displayName = name.isEmpty ? "(No name)" : name
     phones = contact.phoneNumbers.map { $0.value.stringValue }
     emails = contact.emailAddresses.map { $0.value as String }

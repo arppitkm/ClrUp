@@ -16,6 +16,7 @@
 		4E21A2CF15244E7BAAC3EF26 /* PhotoScannerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DC5981EACB4046917DA0A1 /* PhotoScannerProvider.swift */; };
 		51C8FE92163C35E2F4488B57 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		5B99049B81A14EC48774C4A0 /* RCTContactsDuplicates.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5D34BD37943B4EE0823BD597 /* RCTContactsDuplicates.mm */; };
+		6AABD6918EB4400D85BB5E42 /* TopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8957386E44634FD8925A128B /* TopViewController.swift */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		940D63C1471D40F79C32ECB6 /* PermissionsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A4A3304B9D4F568D1DE753 /* PermissionsProvider.swift */; };
@@ -40,6 +41,7 @@
 		4B8EE56EB87D4929BF96EF00 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SceneDelegate.swift; path = ClrUp/SceneDelegate.swift; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-ClrUp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ClrUp.release.xcconfig"; path = "Target Support Files/Pods-ClrUp/Pods-ClrUp.release.xcconfig"; sourceTree = "<group>"; };
 		5D34BD37943B4EE0823BD597 /* RCTContactsDuplicates.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = RCTContactsDuplicates.mm; path = ClrUp/Native/RCTContactsDuplicates.mm; sourceTree = "<group>"; };
+		8957386E44634FD8925A128B /* TopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TopViewController.swift; path = ClrUp/Native/TopViewController.swift; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-ClrUp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ClrUp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = ClrUp/AppDelegate.swift; sourceTree = "<group>"; };
 		76330053274D410897C11C8D /* SimilarPhotosProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SimilarPhotosProvider.swift; path = ClrUp/Native/SimilarPhotosProvider.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				D9DC7895CBFB4E31998C2945 /* RCTSimilarPhotos.mm */,
 				15B30913FE1B4FC5AB3B4827 /* ContactsDuplicatesProvider.swift */,
 				5D34BD37943B4EE0823BD597 /* RCTContactsDuplicates.mm */,
+				8957386E44634FD8925A128B /* TopViewController.swift */,
 			);
 			name = Native;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				B96A57D8D27C469DB059300B /* RCTSimilarPhotos.mm in Sources */,
 				26FF601812C84119B4656A18 /* ContactsDuplicatesProvider.swift in Sources */,
 				5B99049B81A14EC48774C4A0 /* RCTContactsDuplicates.mm in Sources */,
+				6AABD6918EB4400D85BB5E42 /* TopViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
