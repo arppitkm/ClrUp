@@ -43,7 +43,7 @@ const Cell: React.FC<{
       {/* TEMPORARY: real on-device sharpness score, for threshold calibration. Remove once tuned. */}
       <View style={styles.scoreWrap}>
         <Text variant="caption" color="#FFFFFF">
-          {asset.sharpnessScore.toFixed(3)}
+          {typeof asset.sharpnessScore === 'number' ? asset.sharpnessScore.toFixed(3) : String(asset.sharpnessScore)}
         </Text>
       </View>
     </Pressable>
