@@ -40,12 +40,6 @@ const Cell: React.FC<{
       <View style={styles.badgeWrap}>
         <SelectionBadge selected={selected} color={theme.category.blurryPhotos} />
       </View>
-      {/* TEMPORARY: real on-device sharpness score, for threshold calibration. Remove once tuned. */}
-      <View style={styles.scoreWrap}>
-        <Text variant="caption" color="#FFFFFF">
-          {typeof asset.sharpnessScore === 'number' ? asset.sharpnessScore.toFixed(3) : String(asset.sharpnessScore)}
-        </Text>
-      </View>
     </Pressable>
   );
 };
@@ -184,13 +178,5 @@ const styles = StyleSheet.create({
   placeholder: { borderRadius: 6 },
   selectedOverlay: { backgroundColor: 'rgba(20,200,160,0.28)', borderRadius: 6 },
   badgeWrap: { position: 'absolute', top: 6, right: 6 },
-  scoreWrap: {
-    position: 'absolute',
-    bottom: 4,
-    left: 4,
-    backgroundColor: 'rgba(0,0,0,0.65)',
-    borderRadius: 4,
-    paddingHorizontal: 4,
-  },
   footer: { borderTopWidth: StyleSheet.hairlineWidth, paddingTop: 12 },
 });
